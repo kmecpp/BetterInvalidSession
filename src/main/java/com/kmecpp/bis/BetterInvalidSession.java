@@ -1,15 +1,14 @@
 package com.kmecpp.bis;
 
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.util.text.translation.LanguageMap;
+import net.minecraft.util.StringTranslate;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
-import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -54,13 +53,13 @@ public class BetterInvalidSession {
 	@SuppressWarnings("unchecked")
 	@SubscribeEvent
 	public void on(GuiOpenEvent event) {
-		if (!attempted && event.getGui() instanceof GuiMainMenu) {
+		if (!attempted && event.gui instanceof GuiMainMenu) {
 			attempted = true;
 			try {
-				Field instanceField = ObfuscationReflectionHelper.findField(LanguageMap.class, "instance"); //LanguageMap.class.getDeclaredField("instance");
+				Field instanceField = StringTranslate.class.getDeclaredFields()[3]; //LanguageMap.class.getDeclaredField("instance");
 				instanceField.setAccessible(true);
-				LanguageMap t = (LanguageMap) instanceField.get(null);
-				Field mapField = ObfuscationReflectionHelper.findField(LanguageMap.class, "languageList"); //LanguageMap.class.getDeclaredField("languageList");
+				StringTranslate t = (StringTranslate) instanceField.get(null);
+				Field mapField = StringTranslate.class.getDeclaredFields()[2]; //LanguageMap.class.getDeclaredField("languageList");
 				mapField.setAccessible(true);
 				Map<String, String> m = (Map<String, String>) mapField.get(t);
 				m.put("disconnect.loginFailedInfo.invalidSession", isReAuthLoaded ? reAuthKickMessage : kickMessage);
