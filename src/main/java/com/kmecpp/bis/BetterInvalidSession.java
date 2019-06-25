@@ -31,7 +31,7 @@ public class BetterInvalidSession {
 	private static final String DEFAULT_KICK_MESSAGE =
 		"Invalid session (you logged in to MC somewhere else) \n\nRestart your game AND game launcher to login again";
 	private static final String DEFAULT_REAUTH_KICK_MESSAGE =
-		"Invalid session (you logged in to MC somewhere else) \n\nLogin again using the button in the top left of the multiplayer menu or restart your game and game launcher";
+		"Invalid session (you logged in to MC somewhere else) \n\nLogin again using the \"Re-Login\" button in the top left of the multiplayer menu or restart your game and game launcher";
 
 	private static boolean attempted = false;
 
