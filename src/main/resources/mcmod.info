@@ -1,0 +1,11 @@
+[
+    {
+      "modid": "${name}",
+      "name": "${name}",
+      "description": "A better invalid session kick message",
+      "version": "${version}",
+      "mcversion": "${mc_version}",
+      "url": "https://github.com/kmecpp/${name}",
+      "authors": [ "kmecpp" ]
+    }
+]

@@ -1,0 +1,67 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven {
+            name = "forge"
+            url = "https://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+    }
+}
+
+apply plugin: 'net.minecraftforge.gradle.forge'
+
+repositories {
+    maven {
+        name 'ForgeFS'
+        url 'https://files.minecraftforge.net/maven'
+    }
+}
+
+group = "com.kmecpp"
+version = project_version
+archivesBaseName = "BetterInvalidSession"
+sourceCompatibility = '1.7'
+targetCompatibility = '1.7'
+libsDirName = "../output"
+distsDirName = "../output"
+
+minecraft {
+    version = "${minecraft_version}-${forge_version}"
+    mappings = "${mappings_version}"
+    runDir = "run"
+    useDepAts = true
+
+    replace '${name}', project.name
+    replace '${version}', project.version
+    replaceIn "BetterInvalidSession.java"
+}
+
+configurations {
+    jar.archiveName = project.name + "-${minecraft_version}-" + project.version + ".jar"
+}
+
+processResources {
+    inputs.property "name", project.name
+    inputs.property "version", project.version
+    inputs.property "mc_version", minecraft_version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include "mcmod.info"
+
+        // replace version and mcversion
+        expand "name": project.name, "version": project.version, "mc_version": minecraft_version
+    }
+
+    // copy everything else, thats not the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+    rename '(.+_at.cfg)', 'META-INF/$1'
+}
