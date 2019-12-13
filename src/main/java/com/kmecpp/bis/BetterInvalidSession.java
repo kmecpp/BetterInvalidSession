@@ -3,20 +3,22 @@ package com.kmecpp.bis;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.util.text.translation.LanguageMap;
 import net.minecraftforge.client.event.GuiOpenEvent;
+import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
-import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.logging.Logger;
 
-@Mod(modid = BetterInvalidSession.NAME, name = BetterInvalidSession.NAME, version = BetterInvalidSession.VERSION)
+@Mod(BetterInvalidSession.NAME)
 public class BetterInvalidSession {
 
 	public static final String NAME = "${name}";
@@ -35,9 +37,9 @@ public class BetterInvalidSession {
 
 	private static boolean attempted = false;
 
-	@Mod.EventHandler
+	@Mod.EventBusSubscriber
 	public void init(FMLLoadCompleteEvent event) {
-		Configuration config = new Configuration(new File("config", "BetterInvalidSession.cfg"), VERSION);
+		ModConfig config = new ModConfig(ModConfig.Type.CLIENT, new ForgeConfigSpec.Builder().build(), FMLCommonH"BetterInvalidSession.cfg");
 		kickMessage = config.getString("kick-message", "general",
 			DEFAULT_KICK_MESSAGE.replace("\n", "\\n"), "Kick message if the client is disconnected from a server due to having an invalid session");
 		reAuthKickMessage = config.getString("reauth-kick-message", "general",

@@ -11,18 +11,12 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
     }
 }
 
-apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: "net.minecraftforge.gradle"
 
-repositories {
-    maven {
-        name 'ForgeFS'
-        url 'https://files.minecraftforge.net/maven'
-    }
-}
 
 group = "com.kmecpp"
 version = project_version
@@ -33,14 +27,34 @@ libsDirName = "../output"
 distsDirName = "../output"
 
 minecraft {
-    version = "${minecraft_version}-${forge_version}"
-    mappings = "${mappings_version}"
-    runDir = "run"
-    useDepAts = true
+    mappings channel: 'snapshot', version: '20190719-1.14.3'
 
-    replace '${name}', project.name
-    replace '${version}', project.version
-    replaceIn "BetterInvalidSession.java"
+    runs {
+        client {
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                mousetweaks {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+
+repositories {
+    maven {
+        name 'ForgeFS'
+        url 'https://files.minecraftforge.net/maven'
+    }
+}
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.14.4-28.1.10'
 }
 
 configurations {
