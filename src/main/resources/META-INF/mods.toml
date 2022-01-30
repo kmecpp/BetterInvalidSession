@@ -1,0 +1,25 @@
+modLoader="javafml"
+loaderVersion="${loader_version}"
+issueTrackerURL=""
+license="All Rights Reserved"
+
+[[mods]]
+    modId="betterinvalidsession"
+    version="${version}"
+    displayName="BetterInvalidSession"
+    displayURL="https://github.com/kmecpp/${name}"
+    authors="kmecpp"
+    credits=""
+    logoFile=""
+    description='''A better invalid session kick message'''
+
+[[dependencies.betterinvalidsession]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="${mc_version}"
+    side="BOTH"
+[[dependencies.betterinvalidsession]]
+    modId="forge"
+    mandatory=true
+    versionRange="${forge_version}"
+    side="BOTH"
