@@ -25,26 +25,38 @@ public class BetterInvalidSession {
 
 	private static String kickMessage;
 	private static String reAuthKickMessage;
+	private static String OAuthKickMessage;
+
 	private static boolean isReAuthLoaded;
+	private static boolean isOAuthLoaded;
 
 	private static final String DEFAULT_KICK_MESSAGE =
 		"Invalid session (you probably opened another game launcher) \n\nRestart your game AND game launcher to login again";
 	private static final String DEFAULT_REAUTH_KICK_MESSAGE =
 		"Invalid session (you probably opened another game launcher) \n\nLogin again using the \"Re-Login\" button in the top left of the multiplayer menu or restart your game and game launcher";
+	private static final String DEFAULT_OAUTH_KICK_MESSAGE =
+			"Invalid session (you probably opened another game launcher) \n\nLogin again using the \"Login\" button in the top left of the multiplayer menu or restart your game and game launcher";
 
 	private static boolean attempted = false;
 
 	@Mod.EventHandler
 	public void init(FMLLoadCompleteEvent event) {
 		Configuration config = new Configuration(new File("config", "BetterInvalidSession.cfg"), VERSION);
+
 		kickMessage = config.getString("kick-message", "general",
 			DEFAULT_KICK_MESSAGE.replace("\n", "\\n"), "Kick message if the client is disconnected from a server due to having an invalid session");
 		reAuthKickMessage = config.getString("reauth-kick-message", "general",
 			DEFAULT_REAUTH_KICK_MESSAGE.replace("\n", "\\n"), "Kick message if ReAuth is installed");
+		OAuthKickMessage = config.getString("oauth-kick-message", "general",
+				DEFAULT_OAUTH_KICK_MESSAGE.replace("\n", "\\n"), "Kick message if OAuth is installed");
+
 		isReAuthLoaded = Loader.isModLoaded("reauth");
+		isOAuthLoaded = Loader.isModLoaded("oauth");
 
 		kickMessage = kickMessage.replace("\\n", "\n");
 		reAuthKickMessage = reAuthKickMessage.replace("\\n", "\n");
+		OAuthKickMessage = OAuthKickMessage.replace("\\n", "\n");
+
 		config.save();
 
 		MinecraftForge.EVENT_BUS.register(this);
@@ -62,7 +74,7 @@ public class BetterInvalidSession {
 				Field mapField = StringTranslate.class.getDeclaredFields()[2]; //LanguageMap.class.getDeclaredField("languageList");
 				mapField.setAccessible(true);
 				Map<String, String> m = (Map<String, String>) mapField.get(t);
-				m.put("disconnect.loginFailedInfo.invalidSession", isReAuthLoaded ? reAuthKickMessage : kickMessage);
+				m.put("disconnect.loginFailedInfo.invalidSession", isReAuthLoaded ? reAuthKickMessage : isOAuthLoaded ? OAuthKickMessage : kickMessage);
 				logger.info("Injected custom invalid session message successfully");
 			} catch (Exception ex) {
 				ex.printStackTrace();
